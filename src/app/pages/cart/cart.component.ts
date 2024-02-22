@@ -64,13 +64,18 @@ export class CartComponent implements OnInit {
   }
 
   onCheckout(): void {
-    this.http.post('http://localhost:4242/checkout', {
+    this.http.post('https://fr3d-store-api.onrender.com/checkout', {
       items: this.cart.items
     }).subscribe(async (res: any) => {
-      let stripe = await loadStripe('pk_test_51OkOltHMoqj2puA5WgFKFMsm5bufHYOKZ1WB5FzGUPHW5FT17hfZHhHcjJv7etGzsiJi8Ro3IU1v3LEnyPToKyHw00m5Mr1QyM');
+      const stripe = await loadStripe('pk_test_51OkOltHMoqj2puA5WgFKFMsm5bufHYOKZ1WB5FzGUPHW5FT17hfZHhHcjJv7etGzsiJi8Ro3IU1v3LEnyPToKyHw00m5Mr1QyM');
       stripe?.redirectToCheckout({
         sessionId: res.id
-      })
+      }).then((result) => {
+        if (result.error) {
+          console.error(result.error.message);
+          // Trate os erros de redirecionamento aqui
+        }
+      });
     });
   }
 
