@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { Product } from 'src/app/models/product.model';
 import { CartService } from 'src/app/services/cart.service';
 import { StoreService } from 'src/app/services/store.service';
+import { DrawerService } from 'src/app/services/drawer.service';
 
 const ROWS_HEIGHT: { [id:number]: number } = {1: 400, 3: 335, 4: 350};
 
@@ -18,12 +19,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   sort = 'desc';
   count = '12';
   productsSubscription: Subscription | undefined;
+  drawerSubscription: Subscription | undefined;
+  drawerOpen = false;
   
-  constructor(private cartService: CartService, private storeService: StoreService) { }
+  constructor(private cartService: CartService, private storeService: StoreService, private drawerService: DrawerService ) { }
 
   ngOnInit(): void {
     this.getProducts();
-
+    this.drawerSubscription = this.drawerService.drawerOpen$.subscribe(
+      (open) => (this.drawerOpen = open)
+    );
   }
 
   getProducts(): void {
@@ -67,6 +72,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     if(this.productsSubscription) {
       this.productsSubscription.unsubscribe();
     }
+    if (this.drawerSubscription) {
+      this.drawerSubscription.unsubscribe();
+    }
   }
-
 }

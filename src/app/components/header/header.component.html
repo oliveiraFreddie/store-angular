@@ -1,4 +1,7 @@
 <mat-toolbar class="max-w-7xl mx-auto border-x justify-between">
+    <button mat-icon-button class="open-categories" aria-label="open-categories" (click)="toggleDrawer()">
+        <mat-icon>menu</mat-icon>
+      </button>
     <a routerLink="home">Fr3d Store</a>
     <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon
