@@ -6,9 +6,11 @@ import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-cart',
-  templateUrl: './cart.component.html'
+  templateUrl: './cart.component.html',
+  styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
+  loading: boolean = false;
   cart: Cart = {items: [{
     product: 'https://via.placeholder.com/150',
     name: 'sneakers',
@@ -64,10 +66,13 @@ export class CartComponent implements OnInit {
   }
 
   onCheckout(): void {
+    this.loading = true;
+  
     this.http.post('https://fr3d-store-api.onrender.com/checkout', {
       items: this.cart.items
     }).subscribe(async (res: any) => {
       const stripe = await loadStripe('pk_test_51OkOltHMoqj2puA5WgFKFMsm5bufHYOKZ1WB5FzGUPHW5FT17hfZHhHcjJv7etGzsiJi8Ro3IU1v3LEnyPToKyHw00m5Mr1QyM');
+      
       stripe?.redirectToCheckout({
         sessionId: res.id
       }).then((result) => {
@@ -75,8 +80,11 @@ export class CartComponent implements OnInit {
           console.error(result.error.message);
           // Trate os erros de redirecionamento aqui
         }
+      }).finally(() => {
+        this.loading = false;
       });
     });
   }
+  
 
 }

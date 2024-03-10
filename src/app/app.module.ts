@@ -13,6 +13,7 @@ import { MatTableModule } from '@angular/material/table'
 import { MatBadgeModule } from '@angular/material/badge'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { MatListModule } from '@angular/material/list'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -54,7 +55,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatTableModule,
     MatBadgeModule,
     MatSnackBarModule,
-    HttpClientModule
+    HttpClientModule,
+    MatProgressSpinnerModule
   ],
   providers: [CartService, StoreService],
   bootstrap: [AppComponent]
